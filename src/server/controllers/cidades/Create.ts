@@ -20,5 +20,5 @@ export const create = async (req: Request<{},{},ICidade>, res: Response) => {
 
     console.log(req.body);
 
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Não implementado!');
+    return res.status(StatusCodes.CREATED).json(1);
 };
