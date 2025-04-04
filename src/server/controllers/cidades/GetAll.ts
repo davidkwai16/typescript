@@ -5,17 +5,17 @@ import { StatusCodes } from "http-status-codes";
  
 import { CidadesProvider } from "../../database/providers/cidades";
 interface IQueryProps {
-    id?: number;
-    page?: number;
-    limit?: number;
-    filter?: string ;
+    id?: number | null;
+    page?: number | null;
+    limit?: number | null;
+    filter?: string;
 }
 
 export const getAllValidation = validation((getSchema) => ({
     query: getSchema<IQueryProps>(yup.object().shape({
-        page: yup.number().optional().moreThan(0),
-        limit: yup.number().optional().moreThan(0),
-        id: yup.number().integer().optional().default(0),
+        page: yup.number().notRequired().moreThan(0),
+        limit: yup.number().notRequired().moreThan(0),
+        id: yup.number().integer().notRequired().default(0),
         filter: yup.string().optional(),
     })),
 }));

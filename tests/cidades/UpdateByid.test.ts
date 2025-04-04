@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { testServer } from "../jest.setup";
 
+
 describe('Cidades - UpdatebyId', () => {
 
     it('Atualiza registro por id', async () => {
@@ -20,10 +21,10 @@ describe('Cidades - UpdatebyId', () => {
 
     it('Tenta atualizar registro que não existe', async () => {
         const res1 = await testServer
-            .put('/cidades/99999')
+            .put(`/cidades/99999`)
             .send({ nome: 'Caxias' });
 
         expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
-        expect(res1.body).toHaveProperty('errors.default');
+        expect(res1.body).toHaveProperty(`error.default`)
     });
 });

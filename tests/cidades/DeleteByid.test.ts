@@ -19,10 +19,10 @@ describe('Cidades - DeletebyId', () => {
 
     it('Tenta apagar registro que não existe', async () => {
         const res1 = await testServer
-            .delete('/cidades/99999')
+            .delete(`/cidades/99999`)
             .send();
 
         expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
-        expect(res1.body).toHaveProperty('errors.default');
+        expect(res1.body).toHaveProperty(`error.default`);
     });
 });
