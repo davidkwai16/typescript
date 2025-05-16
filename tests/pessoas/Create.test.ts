@@ -61,7 +61,7 @@ describe('Pessoas - Create', () => {
             });
 
         expect(res2.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
-        //expect(res2.body).toHaveProperty('errors.default');
+        expect(res2.body).toHaveProperty('error.default');
     });
 
     it('Cria registro com nomeCompleto muito curto', async () => {

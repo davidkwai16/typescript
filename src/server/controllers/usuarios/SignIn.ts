@@ -40,7 +40,7 @@ export const signIn = async (req: Request<{},{},IBodyProps>, res: Response) => {
         });
     } else {
         return res.status(StatusCodes.OK).json({
-            acessToken: 'teste.teste.teste'
+            accessToken: 'teste.teste.teste'
         });
     };
 };
