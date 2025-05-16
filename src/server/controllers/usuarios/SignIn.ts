@@ -4,6 +4,7 @@ import { validation } from "../../shared/middleware";
 import { StatusCodes } from "http-status-codes";
 import { IUsuario } from "../../database/models";
 import { UsuariosProvider } from "../../database/providers/usuarios";
+import { PasswordCrypto } from "../../shared/services";
  
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -32,7 +33,9 @@ export const signIn = async (req: Request<{},{},IBodyProps>, res: Response) => {
         });
     }
 
-    if (senha !== result.senha) {
+    const passwordMatch = await PasswordCrypto.verifyPassword(senha, result.senha);
+
+    if (!passwordMatch) {
         return res.status(StatusCodes.UNAUTHORIZED).json({
             error: {
                 default: 'Email ou senha são inválidos'
