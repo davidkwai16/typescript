@@ -2,19 +2,41 @@ import { StatusCodes } from "http-status-codes";
 import { testServer } from "../jest.setup";
 
 describe('Pessoas - Create', () => {
+    let accessToken = '';
+    beforeAll(async () => {
+        const email = 'create-pessoas@gmail.com';
+        await testServer.post('/cadastrar').send({ nome: 'Teste', email, senha: '1234567'});
+        const signInRes = await testServer.post('/entrar').send({ email, senha: '1234567'}); 
+
+        accessToken = signInRes.body.accessToken;
+
+    });
+
     let cidadeId: number | undefined = undefined;
     beforeAll(async () => {
         const resCidade = await testServer
             .post('/cidades')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({ nome: 'Teste' });
 
         cidadeId = resCidade.body;
+    });
+
+    it('Tenta criar um registro sem token de acesso', async () => {
+
+        const res1 = await testServer
+            .post('/pessoas')
+            .send({nome: 'Caxias do Sul'});
+
+        expect(res1.statusCode).toEqual(StatusCodes.UNAUTHORIZED);
+        expect(res1.body).toHaveProperty('error.default');
     });
 
     it('Cria registro', async () => {
 
         const res1 = await testServer
             .post('/pessoas')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({
                 cidadeId,
                 email: 'tt@gmail.com',
@@ -29,6 +51,7 @@ describe('Pessoas - Create', () => {
 
         const res1 = await testServer
             .post('/pessoas')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({
                 cidadeId,
                 email: 'tt2@gmail.com',
@@ -43,6 +66,7 @@ describe('Pessoas - Create', () => {
 
         const res1 = await testServer
             .post('/pessoas')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({
                 cidadeId,
                 email: 'ttduplicado@gmail.com',
@@ -54,6 +78,7 @@ describe('Pessoas - Create', () => {
 
         const res2 = await testServer
             .post('/pessoas')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({
                 cidadeId,
                 email: 'ttduplicado@gmail.com',
@@ -68,6 +93,7 @@ describe('Pessoas - Create', () => {
 
         const res1 = await testServer
             .post('/pessoas')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({
                 cidadeId,
                 email: 'tt@gmail.com',
@@ -82,6 +108,7 @@ describe('Pessoas - Create', () => {
 
         const res1 = await testServer
             .post('/pessoas')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({
                 cidadeId,
                 email: 'tt@gmail.com',
@@ -95,6 +122,7 @@ describe('Pessoas - Create', () => {
 
         const res1 = await testServer
             .post('/pessoas')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({
                 cidadeId,
                 nomeCompleto: 'tteste',});
@@ -107,6 +135,7 @@ describe('Pessoas - Create', () => {
 
         const res1 = await testServer
             .post('/pessoas')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({
                 cidadeId,
                 email: 'tt gmail.com',
@@ -121,6 +150,7 @@ describe('Pessoas - Create', () => {
 
         const res1 = await testServer
             .post('/pessoas')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({
                 email: 'tt@gmail.com',
                 nomeCompleto: 'tteste',
@@ -134,6 +164,7 @@ describe('Pessoas - Create', () => {
 
         const res1 = await testServer
             .post('/pessoas')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({
                 cidadeId: 'teste',
                 email: 'tt@gmail.com',
@@ -148,6 +179,7 @@ describe('Pessoas - Create', () => {
 
         const res1 = await testServer
             .post('/pessoas')
+            .set({authorization: `Bearer ${accessToken}`})
             .send({
 
             });
